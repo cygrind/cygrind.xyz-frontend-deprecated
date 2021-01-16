@@ -1,7 +1,8 @@
 const express = require("express");
-const { connect, connection, set, Promise: MongoosePromise } = require("mongoose");
+const { join } = require("path");
 const app = express();
-const port = 3000;
+const port = 8080;
+let { connect, connection, set, Promise: MongoosePromise } = require("mongoose");
 
 // mongoose
 set("useFindAndModify", false);
@@ -16,10 +17,19 @@ const dbOptions = {
   family: 4
 };
 
-await connect("mongodb://127.0.0.1:6969/cygrind", dbOptions);
+// await connect("mongodb://127.0.0.1:6969/cygrind", dbOptions);
+// 
+// connection.on("connected", () => {
+  // console.log("Connected to database");
+// });
 
-connection.on("connected", () => {
-  console.log("Connected to database");
-});
+// middleware
+app.use(express.urlencoded({extended: true}));
+app.set("views", join(__dirname, "views"));
+app.use(express.static("public"));
+
+// routing
+const get = require("./routes/get");
+app.use("/", get.home);
 
 app.listen(port, () => console.log("Webserver up at 127.0.0.1 on port " + port));

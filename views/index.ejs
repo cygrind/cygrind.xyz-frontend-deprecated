@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body class="page-wrapper with-sidebar with-navbar">
+    <div class="navbar">
+        <div id="menu-dropdown" class="dropdown with-arrow">
+            <button class="btn btn-block" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-1" aria-haspopup="true" aria-expanded="false">
+                Menu<i class="fa fa-angle-down" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-1">
+              <h6 class="dropdown-header">Links</h6>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-content">
+                <button class="btn btn-secondary btn-block" type="button" onclick="halfmoon.toggleDarkMode()">
+                    Toggle darkmode
+                </button>
+                <div class="btn btn-block" style="margin-top: 5px; background-color: #11d9d9;" type="button" onclick="halfmoon.toggleSidebar()">
+                    Toggle sidebar
+                </div>
+
+                <button id="mid-btn" class="btn btn-block" style="background-color: #00adee;" type="button">
+                    Sign in with steam
+                </button>
+        
+                <button class="btn btn-primary btn-block" type="button">
+                    Join the ultrakill discord server
+                </button>
+              </div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-secondary buttons" type="button" onclick="halfmoon.toggleDarkMode()">
+            Toggle darkmode
+        </button>
+        
+        <button class="btn buttons" style="background-color: #11d9d9;" type="button" onclick="halfmoon.toggleSidebar()">
+            Toggle sidebar
+        </button>
+
+        <button id="mid-btn" class="btn buttons" style="background-color: #00adee;" type="button">
+            Sign in with steam
+        </button>
+
+        <button class="btn btn-primary buttons" type="button">
+            Join the ultrakill discord server
+        </button>
+
+        <button class="btn buttons" onclick="window.location.href = '/'" type="button">
+            Go home
+        </button>
+
+        </div>
+    </div>
+
+    <div class="sidebar-overlay"></div>
+    <div class="sidebar">
+        <a href="#" class="sidebar-brand">
+            <img src="logo.png" class="img-fluid rounded" alt="h">
+            CYGRIND PATTERNS
+        </a>
+        <div class="sidebar-menu">
+            <div class="sidebar-content">
+                <h4>About the site</h4>
+                <hr>
+                <p class="site-info">
+                    SITE DOMAIN NAME is a list for all things cybergrind (pattern)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="content">
+            <h1 style="font-size: 50px;" class="content-title">
+                The cybergrind pattern list
+            </h1>
+        </div>
+    
+        <hr>
+    
+        <div class="content mw-full">
+            <details class="content collapse-panel">
+                <summary class="collapse-header" style="font-size: xx-large;">
+                    Featured patterns
+                </summary>
+                <div class="collapse-content">
+                    DISPLAY CGP VIS HERE
+                </div>
+            </details>
+        
+            <details class="content collapse-panel">
+                <summary class="collapse-header" style="font-size: xx-large;">
+                    Most downloaded
+                </summary>
+                <div class="collapse-content">
+                    DISPLAY CGP VIS HERE
+                </div>
+            </details>
+        
+        
+            <details class="content collapse-panel">
+                <summary class="collapse-header" style="font-size: xx-large;">
+                    Recent uploads
+                </summary>
+                <div class="collapse-content">
+                    <div class="w-400 mw-full"> 
+                        <div class="container card p-0"> 
+                          <img src="https://f4.bcbits.com/img/a0084845941_10.jpg" class="img-fluid rounded-top" alt="Image of pattern here" style="max-width: 512; max-height: 512;"> 
+                          
+                          <div class="content">
+                                <h2 class="content-title">
+                                    Name of pattern here
+                                </h2>
+                                <p class="text-muted">
+                                    Description goes here
+                                </p>
+                                <div class="text-right"> 
+                                    <a href="#" class="btn">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>    
+    </div>
+
+    <script>
+        halfmoon.toggleDarkMode();
+    </script>
+</body>
+</html>
