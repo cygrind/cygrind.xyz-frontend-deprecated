@@ -5,10 +5,11 @@
                 <span aria-hidden="true">&times;</span>
             </a>
             <h5 class="modal-title">Sign in to your account</h5>
-            <form action="/login" method="POST">
+            <form onsubmit="handleLogin(this, event)">
                 <div class="form-group">
                     <label for="username" class="required">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Username" name="username" required="required">
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username"
+                        required="required">
                 </div>
                 <div class="form-group">
                     <label for="password" class="required">Password</label>
@@ -21,6 +22,16 @@
     </div>
 </div>
 
+<script>
+    function handleLogin(form, event) {
+        event.preventDefault();
+        let data = new FormData(form);
+        let json = JSON.stringify(Object.fromEntries(data));
+
+        let res = await fetch("/login", { method: "POST", body: json })
+    }
+</script>
+
 <div class="modal" id="modal-signup" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -31,7 +42,8 @@
             <form action="/signup" method="POST">
                 <div class="form-group">
                     <label for="username" class="required">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Username" name="username" required="required">
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username"
+                        required="required">
                 </div>
                 <div class="form-group">
                     <label for="password" class="required">Password</label>
@@ -85,22 +97,28 @@
     </div>
 
     <div id="menu-dropdown-login" class="dropdown with-arrow m-10">
-       <button class="btn btn-secondary" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-login"
-           aria-haspopup="true" aria-expanded="false">
-           Login <i class="fa fa-angle-down" aria-hidden="true"></i>
-       </button>
-       <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-login">
-           <div class="dropdown-header">
-               Login options
-           </div>
-           <div class="dropdown-divider"></div>
-           <div class="dropdown-content">
-               <div class="btn-group">
-               <a href="#modal-login" class="btn btn-block" role="button">Sign in</a>
-                   <a href="#modal-signup" class="btn btn-block" role="button">Sign up</a>
-               </div>
-           </div>
-       </div>
+        <button class="btn btn-secondary" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-login"
+            aria-haspopup="true" aria-expanded="false">
+            Login <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-login">
+            <div class="dropdown-header">
+                Login options
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-content">
+                <div class="btn-group">
+                    <a href="#modal-login" class="btn btn-block" role="button">Sign in</a>
+                    <a href="#modal-signup" class="btn btn-block" role="button">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ko-fi-button" style="margin-left: auto;">
+        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+        <script
+            type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L4L8BIHW8'); kofiwidget2.draw();</script>
     </div>
 
     <script>
