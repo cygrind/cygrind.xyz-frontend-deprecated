@@ -1,0 +1,111 @@
+<div class="modal" id="modal-login" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <a href="#" class="btn close" role="button" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+            <h5 class="modal-title">Sign in to your account</h5>
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="username" class="required">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="required">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password" name="password"
+                        required="required">
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-signup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <a href="#" class="btn close" role="button" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+            <h5 class="modal-title">Sign in to your account</h5>
+            <form action="/signup" method="POST">
+                <div class="form-group">
+                    <label for="username" class="required">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="required">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password" name="password"
+                        required="required">
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="navbar">
+    <div id="menu-dropdown" class="dropdown with-arrow">
+        <button class="btn btn-block m-5" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-1"
+            aria-haspopup="true" aria-expanded="false">
+            Menu<i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-1">
+            <h6 class="dropdown-header">Links</h6>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-content">
+                <button class="btn btn-secondary btn-block" type="button" onclick="halfmoon.toggleDarkMode()">
+                    Toggle darkmode
+                </button>
+
+                <button class="btn btn-block" style="background-color: #11d9d9;" type="button"
+                    onclick="halfmoon.toggleSidebar()">
+                    Toggle sidebar
+                </button>
+
+                <button class="btn btn-primary btn-block" type="button">
+                    Join the ultrakill discord server
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn buttons m-10" onclick="window.location.href = '/'" type="button">
+        Go home
+    </button>
+
+    <div class="btn-group">
+        <button class="btn buttons" type="button" onclick="toggleDarkMode()" aria-label="toggle darkmode">
+            <i id="darkmode-toggle" class="fa fa-sun"></i>
+        </button>
+
+        <button class="btn buttons" type="button" onclick="halfmoon.toggleSidebar()">
+            <i class="fa fa-arrow-right-arrow-left"></i>
+        </button>
+    </div>
+
+    <div id="menu-dropdown-login" class="dropdown with-arrow m-10">
+       <button class="btn btn-secondary" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-login"
+           aria-haspopup="true" aria-expanded="false">
+           Login <i class="fa fa-angle-down" aria-hidden="true"></i>
+       </button>
+       <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-login">
+           <div class="dropdown-header">
+               Login options
+           </div>
+           <div class="dropdown-divider"></div>
+           <div class="dropdown-content">
+               <div class="btn-group">
+               <a href="#modal-login" class="btn btn-block" role="button">Sign in</a>
+                   <a href="#modal-signup" class="btn btn-block" role="button">Sign up</a>
+               </div>
+           </div>
+       </div>
+    </div>
+
+    <script>
+        if (document.cookie.includes("user_id")) {
+            document.querySelector("#menu-dropdown-login").style.display = "none";
+        }
+    </script>
+</div>
