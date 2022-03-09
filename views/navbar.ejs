@@ -28,7 +28,9 @@
         let data = new FormData(form);
         let json = JSON.stringify(Object.fromEntries(data));
 
-        let res = await fetch("/login", { method: "POST", body: json })
+        let res = await fetch("/login", { method: "POST", body: json });
+
+        // TODO: finish this (display toast DANGER alert)
     }
 </script>
 
