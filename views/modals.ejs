@@ -1,0 +1,160 @@
+<div class="modal" id="modal-login" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <a href="#" class="btn close" role="button" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+            <h5 class="modal-title">Sign in to your account</h5>
+            <form onsubmit="handleLogin(this, event)">
+                <div class="form-group">
+                    <label for="username" class="required">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username"
+                        required="required">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="required">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password" name="password"
+                        required="required">
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-signup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <a href="#" class="btn close" role="button" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+            <h5 class="modal-title">Sign up to cygrind.xyz</h5>
+            <form onsubmit="handleSignup(this, event)">
+                <div class="form-group" id="form-group-signup-username">
+                    <label for="username" class="required">Username</label>
+                    <div class="invalid-feedback" style="display: none;">
+                        <ul id="form-signup-username-feedback"></ul>
+                    </div>
+                    <input type="text" id="username" class="form-control" placeholder="Username" name="username"
+                        required="required">
+                    <div class="form-text">
+                        Only alphanumeric characters and underscores allowed.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="required">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password" name="password"
+                        required="required">
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="Sign up">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function handleLogin(form, event) {
+        event.preventDefault();
+        let data = new FormData(form);
+        let json = JSON.stringify(Object.fromEntries(data));
+
+        let res = await fetch("/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: json });
+
+        if (res.status !== 200) {
+            halfmoon.initStickyAlert({
+                content: 'Username or password incorrect. If you want to create an account, click <a href="#modal-signup">here</a>',
+                title: "Invalid login",
+                alertType: "alert-danger",
+                fillType: "filled"
+            });
+
+            return;
+        }
+
+        let body = await res.json();
+        sessionStorage.setItem("session", body.session_id);
+        sessionStorage.setItem("username", body.username);
+        sessionStorage.setItem("displayname", body.displayname);
+        sessionStorage.setItem("userId", body.user_id);
+
+        window.location.href = "/dashboard";
+    }
+
+    async function handleSignup(form, event) {
+        event.preventDefault();
+
+        let data = new FormData(form);
+        let json = JSON.stringify(Object.fromEntries(data));
+
+        let res = await fetch("/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: json });
+        let body = await res.json();
+
+        if (res.status !== 200) {
+            console.log(body);
+
+            if (body.errors) {
+                let errors = body.errors;
+                let username_elem = document.querySelector("#form-group-signup-username");
+
+                if (errors.length > 0) {
+                    username_elem.classList.add("is-invalid");
+                    let feedback = document.querySelector("#form-signup-username-feedback");
+                    feedback.textContent = "";
+                    feedback.parentElement.style.display = "unset";
+
+                    errors.forEach(err => {
+                        let elem = document.createElement("li");
+                        elem.innerText = err;
+                        feedback.appendChild(elem);
+                    });
+                } else {
+                    username_elem.classList.remove("is-invalid");
+
+                    let feedback = document.querySelector("#form-signup-username-feedback");
+                    feedback.parentElement.style.display = "hide";
+                }
+
+                return;
+            }
+
+            halfmoon.initStickyAlert({
+                content: body.message,
+                title: "Something went wrong!",
+                alertType: "alert-danger",
+                fillType: "filled"
+            });
+
+            return;
+        }
+
+        sessionStorage.setItem("session", body.session_id);
+        sessionStorage.setItem("username", body.username);
+        sessionStorage.setItem("displayname", body.displayname);
+        sessionStorage.setItem("userId", body.user_id);
+
+        window.location.href = "/dashboard";
+    }
+
+    async function handleLogout() {
+        let userId = sessionStorage.getItem("userId");
+        let sessionId = sessionStorage.getItem("session");
+        let json = JSON.stringify({ user_id: userId, session_id: sessionId });
+
+        let res = await fetch("/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: json });
+        console.log(res.status);
+
+        if (res.status !== 200) {
+            halfmoon.initStickyAlert({
+                title: "Error during logout",
+                content: (await res.json()).message,
+                alertType: "alert-danger",
+                fillType: "filled"
+            });
+
+            return;
+        }
+
+        sessionStorage.clear();
+        window.location.reload();
+    }
+</script>
