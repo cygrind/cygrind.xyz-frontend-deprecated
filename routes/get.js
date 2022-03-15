@@ -38,6 +38,7 @@ module.exports = {
 
     res.status(status).json(body);
   }),
+  
 };
 
 function validateUsername(username) {
@@ -76,6 +77,7 @@ async function apiReq(req, endpoint, query, private) {
     .send();
 
   let body = await apiRes.body.json();
+  console.log(body);
 
   return [apiRes.statusCode, body];
 }

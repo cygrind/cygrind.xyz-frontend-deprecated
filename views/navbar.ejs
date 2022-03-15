@@ -62,7 +62,7 @@
     <div id="menu-dropdown-user" class="dropdown with-arrow m-10" style="display: hide;">
         <button class="btn btn-secondary" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-user"
             aria-haspopup="true" aria-expanded="false">
-            Account <i class="fa fa-angle-down" aria-hidden="true"></i>
+            <script>document.write(sessionStorage.getItem("displayname"))</script> <i class="fa fa-angle-down" aria-hidden="true"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-user">
             <div class="dropdown-header">
@@ -70,10 +70,6 @@
             </div>
             <!-- <hr> -->
             <div class="dropdown-content">
-                Name:
-                <script>document.write(sessionStorage.getItem("displayname"))</script>
-
-                (<script>document.write(sessionStorage.getItem("username"))</script>)
                 <hr>
                 <button class="btn btn-block" onclick="handleLogout()">Logout</button>
             </div>

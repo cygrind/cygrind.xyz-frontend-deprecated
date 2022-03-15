@@ -96,35 +96,32 @@
                 let errors = body.errors;
                 let username_elem = document.querySelector("#form-group-signup-username");
 
-                if (errors.length > 0) {
-                    username_elem.classList.add("is-invalid");
-                    let feedback = document.querySelector("#form-signup-username-feedback");
-                    feedback.textContent = "";
-                    feedback.parentElement.style.display = "unset";
+                username_elem.classList.add("is-invalid");
+                let feedback = document.querySelector("#form-signup-username-feedback");
+                feedback.textContent = "";
+                feedback.parentElement.style.display = "unset";
 
-                    errors.forEach(err => {
-                        let elem = document.createElement("li");
-                        elem.innerText = err;
-                        feedback.appendChild(elem);
-                    });
-                } else {
-                    username_elem.classList.remove("is-invalid");
+                errors.forEach(err => {
+                    let elem = document.createElement("li");
+                    elem.innerText = err;
+                    feedback.appendChild(elem);
+                });
 
-                    let feedback = document.querySelector("#form-signup-username-feedback");
-                    feedback.parentElement.style.display = "hide";
-                }
+                return;
+            } else {
+                let username_elem = document.querySelector("#form-group-signup-username");
+
+                username_elem.classList.add("is-invalid");
+                let feedback = document.querySelector("#form-signup-username-feedback");
+                feedback.textContent = "";
+                feedback.parentElement.style.display = "unset";
+                let elem = document.createElement("li");
+
+                elem.innerText = body.message;
+                feedback.appendChild(elem);
 
                 return;
             }
-
-            halfmoon.initStickyAlert({
-                content: body.message,
-                title: "Something went wrong!",
-                alertType: "alert-danger",
-                fillType: "filled"
-            });
-
-            return;
         }
 
         sessionStorage.setItem("session", body.session_id);
