@@ -26,7 +26,14 @@
         </div>
     </div>
 
-    <button class="btn buttons m-10" onclick="window.location.href = '/'" type="button">
+    <div style="display: flex;">
+        <a href="#" class="sidebar-brand">
+            <img src="/cygrind_logo_v2_128x128.png" class="img-fluid rounded" alt="h">
+            cygrind.xyz
+        </a>
+    </div>
+
+    <button id="home-button" class="btn buttons m-10" onclick="window.location.href = '/'" type="button">
         Go home
     </button>
 
@@ -89,6 +96,12 @@
         } else {
             document.querySelector("#menu-dropdown-login").style.display = "unset";
             document.querySelector("#menu-dropdown-user").style.display = "none";
+        }
+
+        if (window.location.pathname === "/") {
+            document.querySelector("#home-button").style.display = "none"
+        } else {
+            document.querySelector("#home-button").style.display = "unset"
         }
     </script>
 </div>

@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <%- include("navbar.ejs") -%>
 <%- include("sidebar.ejs") -%>
@@ -8,6 +6,15 @@
 <div class="sticky-alerts"></div>
 
 <script>
+    document.onerror = (ev, src, a, b, err) => {
+        halfmoon.initStickyAlert({
+            content: err.message,
+            title: err.name,
+            alertType: "alert-danger",
+            fillType: "filled"
+        });
+    }
+
     function toggleDarkMode() {
         halfmoon.toggleDarkMode();
 
@@ -20,5 +27,43 @@
         }
     }
 
+    function removeURLParameter(url, parameter) {
+        var urlparts = url.split('?');
+        if (urlparts.length >= 2) {
+            var prefix = encodeURIComponent(parameter) + '=';
+            var pars = urlparts[1].split(/[&;]/g);
+
+            for (var i = pars.length; i-- > 0;) {
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                    pars.splice(i, 1);
+                }
+            }
+
+            return [true, urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '')];
+        }
+
+        return [false, url];
+    }
+
+
     toggleDarkMode()
+
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+    console.log(params.handoff);
+    if (params.handoff !== null) {
+        let user = fetch(`/handoff/${params.handoff}`, { method: "GET" }).then(u => {
+            u.json().then(j => {
+                sessionStorage.setItem("session", j.session_id);
+                sessionStorage.setItem("username", j.username);
+                sessionStorage.setItem("displayname", j.displayname);
+                sessionStorage.setItem("userId", j.user_id);
+
+                const location = removeURLParameter(window.location.href, "handoff");
+
+                if (location[0]) window.location.replace(location[1]);
+            });
+        });
+    }
 </script>

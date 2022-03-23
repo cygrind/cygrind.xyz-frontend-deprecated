@@ -8,7 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <title>Document</title>
+    <title>cygrind.xyz | <%= pattern.name %></title>
+
+    <meta property="og:title" content="cygrind.xyz | <%= pattern.name %>">
+    <meta property="og:description" content="<%= pattern.description %>">
+    <meta property="og:url" content="https://cygrind.xyz/patterns/<%= pattern.id %>">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://api.cygrind.xyz/patterns/<%= pattern.id %>/image">
+    <meta name=”theme-color” content=”#eb4034”>
+    <meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="page-wrapper with-sidebar with-navbar">

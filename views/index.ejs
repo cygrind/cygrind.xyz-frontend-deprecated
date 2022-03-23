@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
 
     <meta property="og:title" content="cygrind.xyz | home">
     <meta property="og:description" content="ULTRAKILL mod and cygrind patten list">
@@ -17,11 +19,114 @@
 
     <title>cygrind.xyz</title>
 </head>
+
 <body class="page-wrapper with-sidebar with-navbar">
     <%- include("base.ejs") -%>
 
-    <div class="content-wrapper">
-        <div class="content">
+        <div class="content-wrapper">
+            <h1 class="content">
+                ULTRAKILL mods and cyber grind patterns
+            </h1>
+
+            <hr>
+
+            <div class="content">
+                <form action="..." method="..." class="mw-full">
+                    <div class="form-group" style="display: flex; flex-direction: row;">
+                        <div class="input-group">
+                            <input type="text" title="Input any search terms" class="form-control"
+                                style="padding-top: 30px; padding-bottom: 30px;" id="full-name"
+                                placeholder="Search for patterns and mods here" required="required">
+                            <div class="input-group-append">
+                                <button class="input-group-text btn btn-success"><i
+                                        class="fa fa-magnifying-glass-arrow-right"></i></button>
+                            </div>
+
+                            <!-- <input type="text" class="form-control" style="padding-top: 30px; padding-bottom: 30px;" id="full-name" placeholder="Search for patterns and mods here" required="required">     -->
+                        </div>
+                    </div>
+                </form>
+
+                <br>
+
+                <div class="btn-group">
+                    <button id="btn-ptn" onclick="selectBtnPtn()" class="btn">Pattern browser</button>
+                    <button id="btn-mod" onclick="selectBtnMod()" class="btn">Mod browser</button>
+                </div>
+
+                <div class="card" id="ptn-browser">
+                    <div class="collapse-group">
+                        <details class="collapse-panel mw-full">
+                            <summary class="collapse-header">
+                                Featured patterns
+                            </summary>
+                            <div class="collapse-content">
+
+                                <div class="container-fluid overflow-auto">
+                                    <div class="row">
+                                        <% for (pattern of featured) { %>
+                                            <div class="col-4">
+                                                <div class="mw-third">
+                                                    <div class="card p-0 shadow-lg">
+                                                        <img src="http://127.0.0.1:8080/patterns/<%- pattern.id %>/image"" class="img-fluid rounded-top" alt="...">
+                                                        <div class="content">
+                                                            <h2 class="content-title">
+                                                                <%= pattern.name %> <span class="text-muted font-size-18 p-5">by <%= pattern.owner.name %></span> 
+                                                            </h2>
+                                                            <hr>
+                                                            <p class="text-muted">
+                                                                <%= pattern.description %>
+                                                            </p>
+                                                            <div class="text-right">
+                                                                <div class="btn-group">
+                                                                    <a href="/patterns/<%- pattern.id %>" class="btn btn-block">View</a>
+                                                                    <a href="http://127.0.0.1:8080/patterns/<%- pattern.id %>/download" class="btn btn-block">Download</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </details>
+                        <details class="collapse-panel mw-full">
+                            <summary class="collapse-header">
+                                Highly rated patterns
+                            </summary>
+                            <div class="collapse-content">
+
+                            </div>
+                        </details>
+                        <details class="collapse-panel mw-full">
+                            <summary class="collapse-header">
+                                Recent patterns
+                            </summary>
+                            <div class="collapse-content">
+
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="card" id="mod-browser">
+                    <h1>TODO</h1>
+                    <!-- <details class="collapse-panel mw-full">
+                    <summary class="collapse-header">
+                        Featured mods
+                    </summary>
+                    <div class="collapse-content">
+                        Computers are important because they are like bicycles for the mind.
+                    </div>
+                </details> -->
+                </div>
+            </div>
+
+            <!-- <div class="content">
             <h1 style="font-size: 50px;" class="content-title">
                 The cybergrind pattern list
             </h1>
@@ -73,7 +178,37 @@
                     </div>
                 </div>
             </details>
-        </div>    
-    </div>
+        </div>     -->
+        </div>
+
+        <script>
+            const patternBtn = document.querySelector("#btn-ptn");
+            const patternCard = document.querySelector("#ptn-browser");
+
+            const modBtn = document.querySelector("#btn-mod");
+            const modCard = document.querySelector("#mod-browser");
+
+            let selected = 0;
+
+            patternBtn.classList.add("btn-primary");
+            modCard.style.display = "none";
+
+            function selectBtnMod() {
+                modBtn.classList.add("btn-primary");
+                patternBtn.classList.remove("btn-primary");
+
+                modCard.style.display = "inherit";
+                patternCard.style.display = "none";
+            }
+
+            function selectBtnPtn() {
+                patternBtn.classList.add("btn-primary");
+                modBtn.classList.remove("btn-primary");
+
+                patternCard.style.display = "inherit";
+                modCard.style.display = "none";
+            }
+        </script>
 </body>
+
 </html>

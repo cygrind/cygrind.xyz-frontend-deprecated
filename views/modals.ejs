@@ -17,6 +17,16 @@
                         required="required">
                 </div>
                 <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+                <hr>
+                <div>
+                    <button onclick="handleLoginGoogle()" class="btn btn-block"
+                        style="margin-bottom: 5px; color: #fff; border: none; background-image: linear-gradient(to right, #4285f4 -10% 5%, #ea4335 5% 10%, #fbbc05 10% 15%, #34a853 15% 100%);"><i
+                            class="fa-brands fa-google"></i> Sign in with Google</button>
+                    <button onclick="handleLoginSteam()" class="btn btn-block" style="margin-bottom: 5px; color: #fff; background-color: #2a475e;"><i
+                            class="fa-brands fa-steam"></i> Sign in with Steam</button>
+                    <button onclick="handleLoginGithub()" class="btn btn-block" style="background-color: #424242; color: #fff;"><i class="fa-brands fa-github"></i>
+                        Sign in with GitHub</button>
+                </div>
             </form>
         </div>
     </div>
@@ -153,5 +163,17 @@
 
         sessionStorage.clear();
         window.location.reload();
+    }
+
+    async function handleLoginSteam() {
+        window.location.href = '/login/steam';
+    }
+
+    async function handleLoginGithub() {
+        window.location.href = '/login/github';
+    }
+
+    async function handleLoginGoogle() {
+        window.location.href = '/login/github';
     }
 </script>

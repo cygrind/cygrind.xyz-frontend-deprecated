@@ -15,6 +15,11 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "passport": "^0.5.2",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-steam": "^1.0.17",
+    "timed-cache": "^1.1.5",
     "uuid": "^8.3.2"
   }
 }
