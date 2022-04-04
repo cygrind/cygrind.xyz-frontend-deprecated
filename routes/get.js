@@ -6,13 +6,30 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidV4 } = require("uuid");
 const { apiReq } = require("../util");
 const Cache = require("timed-cache");
+const { btoa } = require("abab");
 
 const privKey = fs.readFileSync("private.pem");
 const handOff = new Cache({ defaultTtl: 300 * 1000 });
 
 module.exports = {
 	home: router.get("/", async (_, res) => {
-		let patternsRes = await aero("http://127.0.0.1:8080/patterns/search").query({ "featured": true, "max": 12 }).send();
+		let patternsRes = await aero("http://127.0.0.1:8080/patterns/search").query({ "q": "testy", "max": 12 }).send();
+
+		if (patternsRes.statusCode === 200) {
+			let body = await patternsRes.body.json();
+			res.render("index.ejs", { featured: body.patterns });
+			return;
+		}
+
+		res.render("index.ejs", { featured: [] });
+	}),
+	florp: router.get("/florp", (_, res) => {
+		res.render("florp.ejs");
+	}),
+	dashboardGet: router.get("/dashboard", async (req, res) => {
+		let userId = req.cookies.userId;
+
+		let patternsRes = await aero("http://127.0.0.1:8080/patterns/search").query({ "q": userId, "max": 12 }).send();
 		let patterns = (await patternsRes.body.json());
 
 		if (typeof patterns.message === "undefined") {
@@ -21,13 +38,7 @@ module.exports = {
 			patterns = [];
 		}
 
-		res.render("index.ejs", { featured: patterns });
-	}),
-	florp: router.get("/florp", (_, res) => {
-		res.render("florp.ejs");
-	}),
-	dashboardGet: router.get("/dashboard", (req, res) => {
-		res.render("dashboard.ejs");
+		res.render("dashboard.ejs", { patterns: patterns });
 	}),
 	patternViewGet: router.get("/patterns/:id", async (req, res) => {
 		console.log(req.params.id);
@@ -44,8 +55,20 @@ module.exports = {
 
 	loginPost: router.post("/login", async (req, res) => {
 		let [status, body] = await apiReq({ standard: req.body }, "login", "?t=standard", true, "POST");
+		
+		if (status === 200) {
+			res.status(200)
+				.cookie("session", body.session_id)
+				.cookie("username", body.username)
+				.cookie("displayname", body.displayname)
+				.cookie("userId", body.user_id)
+				.json({});
+
+			return;
+		}
 
 		res.status(status).json(body);
+
 	}),
 
 	loginWithSteam: router.get("/login/steam", passport.authenticate("steam")),
@@ -70,7 +93,12 @@ module.exports = {
 		console.log(handOff.get(req.params.id));
 		handOff.remove(req.params.id);
 
-		res.status(200).json(user);
+		res.status(200)
+		.cookie("session", user.session_id)
+		.cookie("username", user.username)
+		.cookie("displayname", user.displayname)
+		.cookie("userId", user.user_id)
+		.json({});
 	}),
 
 	signupPost: router.post("/signup", async (req, res) => {
@@ -84,6 +112,18 @@ module.exports = {
 		}
 
 		let [status, body] = await apiReq({ standard: req.body }, "signup", "?t=standard", true, "POST");
+
+		if (status === 200) {
+			res.status(200)
+				.cookie("session", body.session_id)
+				.cookie("username", body.username)
+				.cookie("displayname", body.displayname)
+				.cookie("userId", body.user_id)
+				.json({});
+
+			return;
+		}
+
 		res.status(status).json(body);
 	}),
 	logoutPost: router.post("/logout", async (req, res) => {

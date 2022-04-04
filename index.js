@@ -1,5 +1,6 @@
 const express = require("express");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 const { Strategy: SteamStrategy } = require("passport-steam");
 const { Strategy: GithubStrategy } = require("passport-github2");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
@@ -34,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.json());
+app.use(cookieParser());
 
 passport.use(new SteamStrategy({
 	returnURL: 'http://localhost:3000/login/steam/process',
@@ -57,15 +59,15 @@ passport.use(new GithubStrategy({
 	return done(err, body);
 }));
 
-passport.use(new GoogleStrategy({
-	clientID: process.env.GOOGLE_CLIENT_ID,
-	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://127.0.0.1:3000/login/google/process"
-}, async (_, a, profile, done) => {
-	let [err, body] = await doFlow(profile);
+// passport.use(new GoogleStrategy({
+// 	clientID: process.env.GOOGLE_CLIENT_ID,
+// 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+// 	callbackURL: "http://127.0.0.1:3000/login/google/process"
+// }, async (_, a, profile, done) => {
+// 	let [err, body] = await doFlow(profile);
 
-	return done(err, body);
-}));
+// 	return done(err, body);
+// }));
 
 async function doFlow(profile) {
 	let err = null;

@@ -20,7 +20,7 @@
                 <hr>
                 <div>
                     <button onclick="handleLoginGoogle()" class="btn btn-block"
-                        style="margin-bottom: 5px; color: #fff; border: none; background-image: linear-gradient(to right, #4285f4 -10% 5%, #ea4335 5% 10%, #fbbc05 10% 15%, #34a853 15% 100%);"><i
+                        style="margin-bottom: 5px; color: #fff; border: none; background-image: linear-gradient(to right, #4285f4 -10% 5%, #ea4335 5% 10%, #fbbc05 10% 15%, #34a853 15% 20%);"><i
                             class="fa-brands fa-google"></i> Sign in with Google</button>
                     <button onclick="handleLoginSteam()" class="btn btn-block" style="margin-bottom: 5px; color: #fff; background-color: #2a475e;"><i
                             class="fa-brands fa-steam"></i> Sign in with Steam</button>
@@ -81,12 +81,6 @@
             return;
         }
 
-        let body = await res.json();
-        sessionStorage.setItem("session", body.session_id);
-        sessionStorage.setItem("username", body.username);
-        sessionStorage.setItem("displayname", body.displayname);
-        sessionStorage.setItem("userId", body.user_id);
-
         window.location.href = "/dashboard";
     }
 
@@ -97,9 +91,9 @@
         let json = JSON.stringify(Object.fromEntries(data));
 
         let res = await fetch("/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: json });
-        let body = await res.json();
-
+        
         if (res.status !== 200) {
+            let body = await res.json();
             console.log(body);
 
             if (body.errors) {
@@ -134,17 +128,19 @@
             }
         }
 
-        sessionStorage.setItem("session", body.session_id);
-        sessionStorage.setItem("username", body.username);
-        sessionStorage.setItem("displayname", body.displayname);
-        sessionStorage.setItem("userId", body.user_id);
-
         window.location.href = "/dashboard";
     }
 
     async function handleLogout() {
-        let userId = sessionStorage.getItem("userId");
-        let sessionId = sessionStorage.getItem("session");
+        let cookies = document.cookie.split('; ');
+
+        let userId = cookies
+            .find(row => row.startsWith('userId='))
+            .split('=')[1];
+        let sessionId = cookies
+            .find(row => row.startsWith("session="))
+            .split("=")[1];
+
         let json = JSON.stringify({ user_id: userId, session_id: sessionId });
 
         let res = await fetch("/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: json });
@@ -161,7 +157,12 @@
             return;
         }
 
-        sessionStorage.clear();
+        sessionKeys.map(k => {
+            if (document.cookie.includes(k)) {
+                document.cookie = k + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            }
+        });
+
         window.location.reload();
     }
 

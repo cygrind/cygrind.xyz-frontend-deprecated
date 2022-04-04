@@ -69,7 +69,9 @@
     <div id="menu-dropdown-user" class="dropdown with-arrow m-10" style="display: hide;">
         <button class="btn btn-secondary" data-toggle="dropdown" type="button" id="dropdown-toggle-btn-user"
             aria-haspopup="true" aria-expanded="false">
-            <script>document.write(sessionStorage.getItem("displayname"))</script> <i class="fa fa-angle-down" aria-hidden="true"></i>
+            <script>document.write(
+                document.cookie.split("; ").find(row => row.startsWith('displayname=')).split('=')[1]
+            )</script> <i class="fa fa-angle-down" aria-hidden="true"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdown-toggle-btn-user">
             <div class="dropdown-header">
@@ -90,7 +92,7 @@
     </div>
 
     <script>
-        if (sessionStorage.getItem("userId")) {
+        if (document.cookie.includes("userId")) {
             document.querySelector("#menu-dropdown-login").style.display = "none";
             document.querySelector("#menu-dropdown-user").style.display = "unset";
         } else {

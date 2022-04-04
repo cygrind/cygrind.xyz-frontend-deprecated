@@ -6,6 +6,8 @@
 <div class="sticky-alerts"></div>
 
 <script>
+    const sessionKeys = ["session", "username", "displayname", "userId"];
+
     document.onerror = (ev, src, a, b, err) => {
         halfmoon.initStickyAlert({
             content: err.message,
@@ -21,8 +23,14 @@
         let id = document.querySelector("#darkmode-toggle");
 
         if (halfmoon.darkModeOn) {
+            document.querySelectorAll(".shadow-lm").forEach(element => {
+                element.classList.remove("shadow");
+            });
             id.classList.replace("fa-moon", "fa-sun")
         } else {
+            document.querySelectorAll(".shadow-lm").forEach(element => {
+                element.classList.add("shadow");
+            });
             id.classList.replace("fa-sun", "fa-moon")
         }
     }
@@ -55,11 +63,6 @@
     if (params.handoff !== null) {
         let user = fetch(`/handoff/${params.handoff}`, { method: "GET" }).then(u => {
             u.json().then(j => {
-                sessionStorage.setItem("session", j.session_id);
-                sessionStorage.setItem("username", j.username);
-                sessionStorage.setItem("displayname", j.displayname);
-                sessionStorage.setItem("userId", j.user_id);
-
                 const location = removeURLParameter(window.location.href, "handoff");
 
                 if (location[0]) window.location.replace(location[1]);

@@ -15,6 +15,82 @@
     <%- include("base.ejs") -%>
 
     <div class="content-wrapper">
+        <h1 class="content">
+            My Dashboard
+        </h1>
 
+        <hr>
+
+        <div class="content">
+            <div class="card shadow-lm m-0 my-20">
+                <div class="collapse-group">
+                    <details class="collapse-panel mw-full">
+                        <summary class="collapse-header">
+                            <h2 class="m-0 my-5">
+                                Patterns
+                            </h2>
+                        </summary>
+                        <div class="collapse-content">
+                            <div class="container-fluid overflow-auto">
+                                <div class="row">
+                                    <% for (pattern of patterns) { %>
+                                        <div class="col-4">
+                                            <div class="mw-third">
+                                                <div class="card p-0 shadow-lm">
+                                                    <img src="http://127.0.0.1:8080/patterns/<%- pattern.id %>/image"" class="
+                                                        img-fluid rounded-top" alt="...">
+                                                    <div class="content">
+                                                        <h2 class="content-title">
+                                                            <%= pattern.name %>
+                                                        </h2>
+                                                        <hr>
+                                                        <br>
+
+                                                        <div class="overflow-x-auto overflow-y-hidden">
+                                                            <div class="btn-group d-flex flex-fill">
+                                                                <div class="btn btn-success pointer-events-none">
+                                                                    <i class="fa fa-angle-up"></i> <%= pattern.likes %>
+                                                                </div>
+                                                                <div class="btn btn-danger pointer-events-none">
+                                                                    <i class="fa fa-angle-down"></i> <%= pattern.dislikes %>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="btn-group mw-full d-flex flex-fill">
+                                                                <a href="/patterns/<%- pattern.id %>"
+                                                                    class="btn text-trunicate">View</a>
+                                                                <a href="http://127.0.0.1:8080/patterns/<%- pattern.id %>/edit"
+                                                                    class="btn btn-primary text-trunicate">Edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="collapse-panel mw-full">
+                        <summary class="collapse-header">
+                            <h2 class="m-0 my-5">
+                                Mods
+                            </h2>
+                        </summary>
+                        <div class="collapse-content">
+                            TODO
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script defer>
+        if (sessionKeys.map(k => document.cookie.includes(k)).some(b => b === false)) {
+            window.location.replace("/");
+        }
+    </script>
 </body>

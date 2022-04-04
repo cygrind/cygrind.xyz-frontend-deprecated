@@ -23,192 +23,212 @@
 <body class="page-wrapper with-sidebar with-navbar">
     <%- include("base.ejs") -%>
 
-        <div class="content-wrapper">
-            <h1 class="content">
-                ULTRAKILL mods and cyber grind patterns
-            </h1>
+    <div class="content-wrapper">
+        <h1 class="content">
+            ULTRAKILL mods and cyber grind patterns
+        </h1>
 
-            <hr>
+        <hr>
 
-            <div class="content">
-                <form action="..." method="..." class="mw-full">
-                    <div class="form-group" style="display: flex; flex-direction: row;">
-                        <div class="input-group">
-                            <input type="text" title="Input any search terms" class="form-control"
-                                style="padding-top: 30px; padding-bottom: 30px;" id="full-name"
-                                placeholder="Search for patterns and mods here" required="required">
-                            <div class="input-group-append">
-                                <button class="input-group-text btn btn-success"><i
-                                        class="fa fa-magnifying-glass-arrow-right"></i></button>
-                            </div>
-
-                            <!-- <input type="text" class="form-control" style="padding-top: 30px; padding-bottom: 30px;" id="full-name" placeholder="Search for patterns and mods here" required="required">     -->
+        <div class="content">
+            <form onsubmit="handleSearch(this, event)" class="mw-full">
+                <div class="form-group" style="display: flex; flex-direction: row;">
+                    <div class="input-group">
+                        <input type="text" title="Input any search terms" autocomplete="off"
+                            class="form-control shadow-lm" style="padding-top: 30px; padding-bottom: 30px;"
+                            id="full-name" placeholder="Search for patterns and mods here" required="required">
+                        <div class="input-group-append">
+                            <button class="input-group-text btn btn-success shadow-lm"><i
+                                    class="fa fa-magnifying-glass-arrow-right"></i></button>
                         </div>
                     </div>
-                </form>
-
-                <br>
-
-                <div class="btn-group">
-                    <button id="btn-ptn" onclick="selectBtnPtn()" class="btn">Pattern browser</button>
-                    <button id="btn-mod" onclick="selectBtnMod()" class="btn">Mod browser</button>
                 </div>
+            </form>
 
-                <div class="card" id="ptn-browser">
-                    <div class="collapse-group">
-                        <details class="collapse-panel mw-full">
-                            <summary class="collapse-header">
-                                Featured patterns
-                            </summary>
-                            <div class="collapse-content">
+            <div class="btn-group">
+                <button id="btn-ptn" onclick="selectBtnPtn()" class="btn shadow-lm">Pattern browser</button>
+                <button id="btn-mod" onclick="selectBtnMod()" class="btn shadow-lm">Mod browser</button>
+            </div>
 
-                                <div class="container-fluid overflow-auto">
-                                    <div class="row">
-                                        <% for (pattern of featured) { %>
-                                            <div class="col-4">
-                                                <div class="mw-third">
-                                                    <div class="card p-0 shadow-lg">
-                                                        <img src="http://127.0.0.1:8080/patterns/<%- pattern.id %>/image"" class="img-fluid rounded-top" alt="...">
-                                                        <div class="content">
-                                                            <h2 class="content-title">
-                                                                <%= pattern.name %> <span class="text-muted font-size-18 p-5">by <%= pattern.owner.name %></span> 
-                                                            </h2>
-                                                            <hr>
-                                                            <p class="text-muted">
-                                                                <%= pattern.description %>
-                                                            </p>
-                                                            <div class="text-right">
-                                                                <div class="btn-group">
-                                                                    <a href="/patterns/<%- pattern.id %>" class="btn btn-block">View</a>
-                                                                    <a href="http://127.0.0.1:8080/patterns/<%- pattern.id %>/download" class="btn btn-block">Download</a>
+            <div class="card shadow-lm m-0 my-20" id="ptn-browser">
+                <div class="collapse-group">
+                    <details class="collapse-panel mw-full">
+                        <summary class="collapse-header">
+                            Featured patterns
+                        </summary>
+                        <div class="collapse-content">
+                            <div class="container-fluid overflow-auto">
+                                <div class="row">
+                                    <% for (pattern of featured) { %>
+                                        <div class="col-4">
+                                            <div class="mw-third">
+                                                <div class="card p-0 shadow-lm">
+                                                    <img src="http://127.0.0.1:8080/patterns/<%- pattern.id %>/image"" class="
+                                                        img-fluid rounded-top" alt="...">
+                                                    <div class="content">
+                                                        <h2 class="content-title">
+                                                            <%= pattern.name %> <span
+                                                                    class="text-muted font-size-18 p-5">by <%=
+                                                                        pattern.owner.name %></span>
+                                                        </h2>
+                                                        <p class="text-muted">
+                                                            Uploaded 
+                                                            <script>
+                                                                let date = new Date(parseInt("<%- pattern.uploaded_timestamp %>"));
+                                                                let dateFmt = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()} @ ${date.getHours()}:${date.getSeconds() < 9 ? "0" + date.getSeconds() : date.getSeconds()}`
+                                                                document.write(dateFmt);
+                                                            </script>
+                                                        </p>
+                                                        <hr>
+                                                        <p class="text-muted">
+                                                            <%= pattern.description %>
+                                                        </p>
+                                                        <hr>
+                                                        <br>
+
+                                                        <div class="overflow-x-auto overflow-y-hidden">
+                                                            <div class="btn-group d-flex flex-fill">
+                                                                <div class="btn btn-success pointer-events-none">
+                                                                    <i class="fa fa-angle-up"></i> <%= pattern.likes %>
                                                                 </div>
+                                                                <div class="btn btn-danger pointer-events-none">
+                                                                    <i class="fa fa-angle-down"></i> <%= pattern.dislikes %>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="btn-group mw-full d-flex flex-fill">
+                                                                <a href="/patterns/<%- pattern.id %>"
+                                                                    class="btn text-trunicate">View</a>
+                                                                <a href="http://127.0.0.1:8080/patterns/<%- pattern.id %>/download"
+                                                                    class="btn btn-primary text-trunicate">Download</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <% } %>
-                                    </div>
+                                        </div>
+                                    <% } %>
                                 </div>
-
-                                
                             </div>
-                        </details>
-                        <details class="collapse-panel mw-full">
-                            <summary class="collapse-header">
-                                Highly rated patterns
-                            </summary>
-                            <div class="collapse-content">
+                        </div>
+                    </details>
 
-                            </div>
-                        </details>
-                        <details class="collapse-panel mw-full">
-                            <summary class="collapse-header">
-                                Recent patterns
-                            </summary>
-                            <div class="collapse-content">
-
-                            </div>
-                        </details>
-                    </div>
-                </div>
-
-                <div class="card" id="mod-browser">
-                    <h1>TODO</h1>
-                    <!-- <details class="collapse-panel mw-full">
-                    <summary class="collapse-header">
-                        Featured mods
-                    </summary>
-                    <div class="collapse-content">
-                        Computers are important because they are like bicycles for the mind.
-                    </div>
-                </details> -->
+                    <details class="collapse-panel mw-full">
+                        <summary class="collapse-header">
+                            Highly rated patterns
+                        </summary>
+                        <div class="collapse-content">
+                        </div>
+                    </details>
+                    <details class="collapse-panel mw-full">
+                        <summary class="collapse-header">
+                            Recent patterns
+                        </summary>
+                        <div class="collapse-content">
+                        </div>
+                    </details>
                 </div>
             </div>
 
-            <!-- <div class="content">
-            <h1 style="font-size: 50px;" class="content-title">
-                The cybergrind pattern list
-            </h1>
+            <div class="card shadow-lm m-0 my-20" id="mod-browser">
+                <h1>TODO</h1>
+                <!-- <details class="collapse-panel mw-full">
+                <summary class="collapse-header">
+                    Featured mods
+                </summary>
+                <div class="collapse-content">
+                    Computers are important because they are like bicycles for the mind.
+                </div>
+            </details> -->
+            </div>
         </div>
+        <!-- <div class="content">
+        <h1 style="font-size: 50px;" class="content-title">
+            The cybergrind pattern list
+        </h1>
+    </div>
+
+    <hr>
+
+    <div class="content mw-full">
+        <details class="content collapse-panel">
+            <summary class="collapse-header" style="font-size: xx-large;">
+                Featured patterns
+            </summary>
+            <div class="collapse-content">
+                DISPLAY CGP VIS HERE
+            </div>
+        </details>
     
-        <hr>
+        <details class="content collapse-panel">
+            <summary class="collapse-header" style="font-size: xx-large;">
+                Most downloaded
+            </summary>
+            <div class="collapse-content">
+                DISPLAY CGP VIS HERE
+            </div>
+        </details>
     
-        <div class="content mw-full">
-            <details class="content collapse-panel">
-                <summary class="collapse-header" style="font-size: xx-large;">
-                    Featured patterns
-                </summary>
-                <div class="collapse-content">
-                    DISPLAY CGP VIS HERE
-                </div>
-            </details>
-        
-            <details class="content collapse-panel">
-                <summary class="collapse-header" style="font-size: xx-large;">
-                    Most downloaded
-                </summary>
-                <div class="collapse-content">
-                    DISPLAY CGP VIS HERE
-                </div>
-            </details>
-        
-        
-            <details class="content collapse-panel">
-                <summary class="collapse-header" style="font-size: xx-large;">
-                    Recent uploads
-                </summary>
-                <div class="collapse-content">
-                    <div class="w-400 mw-full"> 
-                        <div class="container card p-0"> 
-                          <img src="https://f4.bcbits.com/img/a0084845941_10.jpg" class="img-fluid rounded-top" alt="Image of pattern here" style="max-width: 512; max-height: 512;"> 
-                          
-                          <div class="content">
-                                <h2 class="content-title">
-                                    Name of pattern here
-                                </h2>
-                                <p class="text-muted">
-                                    Description goes here
-                                </p>
-                                <div class="text-right"> 
-                                    <a href="#" class="btn">Download</a>
-                                </div>
+    
+        <details class="content collapse-panel">
+            <summary class="collapse-header" style="font-size: xx-large;">
+                Recent uploads
+            </summary>
+            <div class="collapse-content">
+                <div class="w-400 mw-full"> 
+                    <div class="container card p-0"> 
+                      <img src="https://f4.bcbits.com/img/a0084845941_10.jpg" class="img-fluid rounded-top" alt="Image of pattern here" style="max-width: 512; max-height: 512;"> 
+                      
+                      <div class="content">
+                            <h2 class="content-title">
+                                Name of pattern here
+                            </h2>
+                            <p class="text-muted">
+                                Description goes here
+                            </p>
+                            <div class="text-right"> 
+                                <a href="#" class="btn">Download</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </details>
-        </div>     -->
-        </div>
+            </div>
+        </details>
+    </div>     -->
+    </div>
 
-        <script>
-            const patternBtn = document.querySelector("#btn-ptn");
-            const patternCard = document.querySelector("#ptn-browser");
+    <script>
+        const patternBtn = document.querySelector("#btn-ptn");
+        const patternCard = document.querySelector("#ptn-browser");
 
-            const modBtn = document.querySelector("#btn-mod");
-            const modCard = document.querySelector("#mod-browser");
+        const modBtn = document.querySelector("#btn-mod");
+        const modCard = document.querySelector("#mod-browser");
 
-            let selected = 0;
+        let selected = 0;
 
+        patternBtn.classList.add("btn-primary");
+        modCard.style.display = "none";
+
+        function selectBtnMod() {
+            modBtn.classList.add("btn-primary");
+            patternBtn.classList.remove("btn-primary");
+
+            modCard.style.display = "inherit";
+            patternCard.style.display = "none";
+        }
+
+        function selectBtnPtn() {
             patternBtn.classList.add("btn-primary");
+            modBtn.classList.remove("btn-primary");
+
+            patternCard.style.display = "inherit";
             modCard.style.display = "none";
+        }
 
-            function selectBtnMod() {
-                modBtn.classList.add("btn-primary");
-                patternBtn.classList.remove("btn-primary");
-
-                modCard.style.display = "inherit";
-                patternCard.style.display = "none";
-            }
-
-            function selectBtnPtn() {
-                patternBtn.classList.add("btn-primary");
-                modBtn.classList.remove("btn-primary");
-
-                patternCard.style.display = "inherit";
-                modCard.style.display = "none";
-            }
-        </script>
+        function handleSearch(form, event) {
+            event.preventDefault();
+        }
+    </script>
 </body>
 
 </html>
